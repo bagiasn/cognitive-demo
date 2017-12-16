@@ -2,10 +2,15 @@ package com.github.bagiasn.cognitive_demo;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
+import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,17 +27,20 @@ import com.github.bagiasn.cognitive_demo.utils.PermissionUtils;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-    CloudVisionCallback {
+    CloudVisionCallback, GoogleSpeechCallback {
 
     public static String PACKAGE_NAME;
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
-    private static final int GALLERY_IMAGE_REQUEST = 1;
+    private static final int RECORD_PERMISSIONS_REQUEST = 1;
+    private static final int GALLERY_IMAGE_REQUEST = 2;
 
     // UI elements.
     private ImageView imgHolder;
-    private TextView txtResult;
+    private TextView txtVisionResult;
+    private TextView txtSpeechResult;
+    private ProgressBar pgSpeechBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +58,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnStartRecording.setOnClickListener(this);
 
         imgHolder = findViewById(R.id.main_image_holder);
-        txtResult = findViewById(R.id.main_textview_result);
+        txtVisionResult = findViewById(R.id.main_textview_vision_result);
+        txtSpeechResult = findViewById(R.id.main_textview_speech_result);
+        pgSpeechBar = findViewById(R.id.main_progress_speech);
     }
 
     @Override
@@ -59,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startGalleryChooser();
                 break;
             case R.id.main_button_start_recording:
+                startSpeechRecognition();
                 break;
             default:
                 break;
@@ -77,19 +89,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == GALLERY_PERMISSIONS_REQUEST) {
-            if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
-                startGalleryChooser();
-            }
+        switch (requestCode) {
+            case GALLERY_PERMISSIONS_REQUEST:
+                if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
+                    startGalleryChooser();
+                }
+                break;
+            case RECORD_PERMISSIONS_REQUEST:
+                if (PermissionUtils.permissionGranted(requestCode, RECORD_PERMISSIONS_REQUEST, grantResults)) {
+                    startSpeechRecognition();
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onVisionApiResult(String result) {
-        if (txtResult != null) {
-            txtResult.setText(result);
-            txtResult.setVisibility(View.VISIBLE);
+        if (txtVisionResult != null) {
+            txtVisionResult.setText(result);
+            txtVisionResult.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onSpeechStarted() {
+        pgSpeechBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onSpeechResult(String result) {
+        if (txtSpeechResult != null) {
+            txtSpeechResult.setText(result);
+            txtSpeechResult.setVisibility(View.VISIBLE);
+        }
+        pgSpeechBar.setVisibility(View.GONE);
     }
 
     public void startGalleryChooser() {
@@ -98,6 +133,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select an image"), GALLERY_IMAGE_REQUEST);
+        }
+    }
+
+    public void startSpeechRecognition() {
+        if (PermissionUtils.requestPermission(this, RECORD_PERMISSIONS_REQUEST, Manifest.permission.RECORD_AUDIO)) {
+            // Google Recognizer needs to run on the main thread.
+            SpeechRecognizer recognizer = SpeechRecognizer.createSpeechRecognizer(this);
+            final Handler mainHandler = new Handler(Looper.getMainLooper());
+            mainHandler.post(new GoogleSpeechTask(recognizer, this));
         }
     }
 
@@ -143,5 +187,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
-
 }
