@@ -98,7 +98,7 @@ public class CloudVisionTask extends AsyncTask<Object, Void, String> {
                 annotateImageRequest.setFeatures(new ArrayList<Feature>() {{
                     Feature labelDetection = new Feature();
                     labelDetection.setType("LABEL_DETECTION");
-                    labelDetection.setMaxResults(10);
+                    labelDetection.setMaxResults(3);
                     add(labelDetection);
                 }});
 

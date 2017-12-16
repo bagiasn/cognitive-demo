@@ -16,17 +16,21 @@
        android:backgroundTint="@color/colorPrimary"
        android:text="@string/main_button_image_title"
        android:textColor="@android:color/white"/>
+
     <ImageView
         android:id="@+id/main_image_holder"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_below="@id/main_button_select_image"
         android:contentDescription="@string/main_image_content_description" />
+
     <TextView
         android:id="@+id/main_textview_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/main_image_holder"/>
+        android:layout_below="@id/main_image_holder"
+        android:visibility="invisible"/>
+
     <Button
         android:id="@+id/main_button_start_recording"
         android:layout_width="match_parent"

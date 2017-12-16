@@ -86,8 +86,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onVisionApiResult(String result) {
-        if (txtResult != null)
+        if (txtResult != null) {
             txtResult.setText(result);
+            txtResult.setVisibility(View.VISIBLE);
+        }
     }
 
     public void startGalleryChooser() {
