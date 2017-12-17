@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pgVisionBar.setVisibility(View.VISIBLE);
             // Clear any previous results.
             txtVisionResult.setText("");
+            txtVisionResult.setVisibility(View.INVISIBLE);
             txtSpeechResult.setText("");
             // Start the Vision request.
             uploadImage(data.getData());

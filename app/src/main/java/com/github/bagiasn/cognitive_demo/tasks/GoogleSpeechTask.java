@@ -70,19 +70,21 @@ public class GoogleSpeechTask implements Runnable, RecognitionListener {
 
     @Override
     public void onError(int i) {
-
+        callback.onSpeechResult("Please try again.");
+        close();
     }
 
     @Override
     public void onResults(Bundle results) {
         ArrayList data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         if (data == null || data.size() == 0) {
-            callback.onSpeechResult("An error occurred. Please try again.");
-            return;
+            callback.onSpeechResult("Please try again.");
+        } else {
+            String text = (String) data.get(0);
+            Log.d(TAG, text);
+            callback.onSpeechResult(text);
         }
-        String text = (String) data.get(0);
-        Log.d(TAG, text);
-        callback.onSpeechResult(text);
+        close();
     }
 
     @Override
@@ -93,6 +95,12 @@ public class GoogleSpeechTask implements Runnable, RecognitionListener {
     @Override
     public void onEvent(int i, Bundle bundle) {
 
+    }
+
+    private void close() {
+        speechRecognizer.stopListening();
+        speechRecognizer.setRecognitionListener(null);
+        speechRecognizer.destroy();
     }
 
     private void setupIntent() {
