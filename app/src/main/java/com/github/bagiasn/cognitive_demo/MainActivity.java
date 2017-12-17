@@ -35,12 +35,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
     private static final int RECORD_PERMISSIONS_REQUEST = 1;
     private static final int GALLERY_IMAGE_REQUEST = 2;
-
+    // Visibility flag to show Vision results immediately if the user has already said something.
+    private boolean shouldShowVisionResults = false;
     // UI elements.
     private ImageView imgHolder;
     private TextView txtVisionResult;
     private TextView txtSpeechResult;
     private ProgressBar pgSpeechBar;
+    private ProgressBar pgVisionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtVisionResult = findViewById(R.id.main_textview_vision_result);
         txtSpeechResult = findViewById(R.id.main_textview_speech_result);
         pgSpeechBar = findViewById(R.id.main_progress_speech);
+        pgVisionBar = findViewById(R.id.main_progress_vision);
     }
 
     @Override
@@ -81,6 +84,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            // Indicate progress.
+            pgVisionBar.setVisibility(View.VISIBLE);
+            // Clear any previous results.
+            txtVisionResult.setText("");
+            txtSpeechResult.setText("");
+            // Start the Vision request.
             uploadImage(data.getData());
         }
     }
@@ -109,8 +118,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onVisionApiResult(String result) {
         if (txtVisionResult != null) {
             txtVisionResult.setText(result);
-            txtVisionResult.setVisibility(View.VISIBLE);
         }
+        pgVisionBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -123,7 +132,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (txtSpeechResult != null) {
             txtSpeechResult.setText(result);
             txtSpeechResult.setVisibility(View.VISIBLE);
+            // Show Vision results, too, for comparison.
+            txtVisionResult.setVisibility(View.VISIBLE);
         }
+        // Hide progress bar.
         pgSpeechBar.setVisibility(View.GONE);
     }
 

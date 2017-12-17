@@ -24,10 +24,20 @@
         android:layout_below="@id/main_button_select_image"
         android:contentDescription="@string/main_image_content_description" />
 
+    <ProgressBar
+        android:id="@+id/main_progress_vision"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_image_holder"
+        android:layout_marginTop="50dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        style="@android:style/Widget.Holo.ProgressBar.Horizontal" />
+
     <TextView
         android:id="@+id/main_textview_vision_result"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_below="@id/main_image_holder"
         android:layout_marginTop="10dp"
         android:textSize="18sp"
@@ -41,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/main_textview_vision_result"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:textSize="18sp"
         android:textAlignment="center"
         android:visibility="invisible"/>
