@@ -2,9 +2,7 @@ package com.github.bagiasn.cognitive_demo;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +20,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.bagiasn.cognitive_demo.tasks.CloudVisionTask;
+import com.github.bagiasn.cognitive_demo.tasks.GoogleSpeechTask;
 import com.github.bagiasn.cognitive_demo.utils.PermissionUtils;
 
 import java.io.IOException;

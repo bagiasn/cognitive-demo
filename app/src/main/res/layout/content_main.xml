@@ -29,13 +29,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/main_image_holder"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:textAlignment="center"
         android:visibility="invisible"/>
+
+    <View android:layout_below="@id/main_textview_vision_result" style="@style/Divider"/>
 
     <TextView
         android:id="@+id/main_textview_speech_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/main_textview_vision_result"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:textAlignment="center"
         android:visibility="invisible"/>
 
     <ProgressBar

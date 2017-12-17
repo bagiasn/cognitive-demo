@@ -1,4 +1,4 @@
-package com.github.bagiasn.cognitive_demo;
+package com.github.bagiasn.cognitive_demo.tasks;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+
+import com.github.bagiasn.cognitive_demo.GoogleSpeechCallback;
+import com.github.bagiasn.cognitive_demo.MainActivity;
 
 import java.util.ArrayList;
 

@@ -1,10 +1,12 @@
-package com.github.bagiasn.cognitive_demo;
+package com.github.bagiasn.cognitive_demo.tasks;
 
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.github.bagiasn.cognitive_demo.CloudVisionCallback;
+import com.github.bagiasn.cognitive_demo.MainActivity;
 import com.github.bagiasn.cognitive_demo.utils.PackageManagerUtils;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
