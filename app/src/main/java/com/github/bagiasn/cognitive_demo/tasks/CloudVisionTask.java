@@ -35,7 +35,8 @@ import java.util.Locale;
 
 public class CloudVisionTask extends AsyncTask<Object, Void, String> {
     private static final String TAG = CloudVisionTask.class.getSimpleName();
-    private static final String CLOUD_VISION_API_KEY = "AIzaSyAHyP8XqIvnry19Gl5m4uCl2Ru0W7VVZKk";
+    // The previous API key is invalid, update with your API key.
+    private static final String CLOUD_VISION_API_KEY = "YOUR_API_KEY";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
 
