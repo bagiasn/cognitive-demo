@@ -22,7 +22,11 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_below="@id/main_button_select_image"
-        android:contentDescription="@string/main_image_content_description" />
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/main_image_content_description"
+        android:src="@drawable/main_img_placeholder"/>
+
+    <View android:layout_below="@id/main_image_holder" style="@style/Divider"/>
 
     <ProgressBar
         android:id="@+id/main_progress_vision"
